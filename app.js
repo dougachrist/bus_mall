@@ -2,20 +2,19 @@
 
 //global vars
 
-var imageNameArray = [bag, banana, bathroom, boots, breakfast, bubblegum, chair,
-cthulu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, usb, waterCan, wineGlass];
+var imageNameArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulu', 'dogDuck', 'dragon', 'pen', 'petSweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb','waterCan'];
 
 var imageObjectArray = [];
 
-function imageLoader(imgName,idNumber,) {
+function imageLoader(imgName,idNumber) {
 
   this.imgName = imgName;
   this.idNumber = idNumber;
-  this.filePath = 'img/' + imgName + '.jpg'
-  this.imgHTMLtag = '<img src="' + imgName + '.jpg">';
+  this.filePath = 'img/' + imgName + '.jpg';
+  this.imgHTMLtag = '<img src="img/' + imgName + '.jpg">';
   this.timesClicked = 0;
   this.timesViewed = 0;
-  imageArray.push(this);
+  imageObjectArray.push(this);
 }
 
 // var bag = new imageLoader(bag,1,'img/bag.jpg');
@@ -45,26 +44,47 @@ function getRandomNumber(min, max) {
 
 for( var i = 0; i < imageNameArray.length; i++) {
   var newImage = imageNameArray[i];
-  newImage = new imageLoader(newImage,(i+1));
+  newImage = new imageLoader(newImage,i);
 }
 
-var ulEl = document.getElementById('imageSpace');
-console.log(ulEl);
+console.log(imageObjectArray.length);
 
-var liEl = document.createElement('li');
-liEl.innerHTML =
-.0000
+function generateNewPhoto() {
+  i = getRandomNumber(0,(imageObjectArray.length - 2));
+  var ulEl = document.getElementById('imageSpace');
+  var liEl = document.createElement('li');
+  liEl.id = 'firstPhotoLi';
+  var imgEl = document.createElement('img');
+  imgEl.setAttribute('src', imageObjectArray[i].filePath);
+  imgEl.id = 'firstPhotoImg';
+  liEl.appendChild(imgEl);
+  ulEl.appendChild(liEl);
+}
 
+generateNewPhoto();
+var firstPhoto = document.getElementById('firstPhotoImg');
 
+var imageSpace = document.getElementById('imageSpace');
 
+function repeatFunction(event) {
+  if (event.target.id === 'firstPhotoImg') {
+    console.log('you clicked on the photo');
+    var ulEl = document.getElementById('imageSpace');
+    ulEl.innerHTML = '';
+    generateNewPhoto();
+  }
+};
 
+imageSpace.addEventListener('click', repeatFunction);
 
+// var liEl = document.getElementById('')
 
-
-
-
-
-;
-ulEl.appendChild(liEl);
-
-console.log(ulEl);
+// var
+//
+// addEventListener('click', somefunction)
+// var ulEl = document.getElementById('imageSpace');
+// ulEl.innerHTML = '';
+//
+// i = getRandomNumber(0,imageObjectArray.length);
+// var liEl = document.getElementById('fistPhoto');
+// liEl.innerHTML = imageObjectArray[i].imgHTMLtag;
