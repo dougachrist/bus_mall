@@ -1,0 +1,23 @@
+body {
+  background: gray;
+  color: blue;
+}
+
+header {
+  background: orange;
+}
+
+h1 {
+  display: block;
+  margin: 0 auto;
+  font-size: 50px;
+}
+
+h2 {  margin: 0 auto;
+  font-size: 30px
+}
+
+.gallery li {
+  display: inline;
+  margin: 10px;
+}
