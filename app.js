@@ -134,10 +134,6 @@ function generateNewPhotos() {
   }
 }
 
-var firstPhoto = document.getElementById('firstPhotoImg');
-
-var imageSpace = document.getElementById('imageSpace');
-
 function checkPhoto(arrayObj) {
   arrayObj.timesClicked++;
   var ulEl = document.getElementById('imageSpace');

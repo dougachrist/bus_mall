@@ -10,11 +10,6 @@ header {
   border-bottom: 1px solid #7e833d;
 }
 
-#runningCounter {
-  margin-top: -50px;
-  margin-bottom: 50px;
-}
-
 h1 {
   font-size: 100px;
 }
@@ -47,7 +42,7 @@ margin-top:50px;
 font-size: 40px;
 width: 200px;
 height: 100px;
-border: 3px solid black
+border: 3px solid black;
 }
 
 button:hover {
@@ -59,7 +54,9 @@ border: 3px solid green;
 cursor: pointer;
 }
 
-ul {
+#runningCounter {
+  margin-top: -50px;
+  margin-bottom: 50px;
 }
 
 li {
@@ -75,16 +72,16 @@ li {
 img {
   margin: 0 auto;
   height: 300px;
-  width: 300px:
+  width: 300px;
+  box-shadow: 0 0 20px #777777;
 }
 
 img:hover {
-  border: 2px solid green;
+  box-shadow: 0 0 20px gold;
   margin: 0 auto;
   height: 300px;
   width: 300px;
   cursor: pointer;
-
 }
 
 table {
@@ -108,6 +105,7 @@ th {
   padding: 3px;
   border: 1px solid white;
 }
+
 th:last-child {
   width: 100px;
   margin: 5px;
