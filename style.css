@@ -118,11 +118,11 @@ td {
   border: 1px solid white;
 }
 
-.chartjs {
+div.chartjs {
   display: inline-block;
+  margin-top: 80px;
   width: 500px;
   height: 300px;
-  float: left;
 }
 
 canvas {

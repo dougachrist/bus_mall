@@ -13,6 +13,9 @@ var i = 50;
 var j = 50;
 var k = 50;
 var clicksPerProduct = [];
+var viewsPerProduct = [];
+var clickThruPerProduct = [];
+var maxIndex = 0;
 
 function imageLoader(imgName,idNumber) {
   this.imgName = imgName;
@@ -54,7 +57,6 @@ for(var i = 0; i < imageNameArray.length; i++) {
 
 function getthreerandomnumbers() {
   i = getRandomNumber(0,(imageObjectArray.length - 1));
-  console.log(i);
   while (i === randNum1 || i === randNum2 || i === randNum3) {
     i = getRandomNumber(0,(imageObjectArray.length - 1));
   }
@@ -72,14 +74,11 @@ function getthreerandomnumbers() {
 }
 
 function generateNewPhotos() {
-  console.log(i);
   getthreerandomnumbers();
-  console.log(i);
   var ulEl = document.getElementById('imageSpace');
   var liEl = document.createElement('li');
   liEl.id = 'firstPhotoLi';
   var imgEl = document.createElement('img');
-  console.log(i);
   imgEl.setAttribute('src', imageObjectArray[i].filePath);
   imgEl.id = 'firstPhotoImg';
   imageObjectArray[i].timesViewed++;
@@ -108,6 +107,18 @@ function generateNewPhotos() {
   var clickCounterEl = document.getElementById('runningTotal');
   clickCounterEl.textContent = clickCounter;
   if(clickCounter > 24) {
+
+    for(var b = 0; b < imageObjectArray.length; b++ ){
+      clicksPerProduct.push(imageObjectArray[b].timesClicked);
+      viewsPerProduct.push(imageObjectArray[b].timesViewed);
+      if(imageObjectArray[b].timesViewed !== 0) {
+        var e = Math.floor(((imageObjectArray[b].timesClicked / imageObjectArray[b].timesViewed) * 100));
+      } else {
+        var e = 0;
+      }
+      clickThruPerProduct.push(e);
+    }
+
     imageSpace.removeEventListener('click', showMorePhotos);
 
     var tbEl = document.getElementById('tableResults');
@@ -139,17 +150,33 @@ function generateNewPhotos() {
       tdEl.textContent = imageObjectArray[p].timesClicked;
       trEl.appendChild(tdEl);
       var tdEl = document.createElement('td');
-      tdEl.textContent = Math.floor(((imageObjectArray[p].timesClicked / imageObjectArray[p].timesViewed) * 100)) + '%';
+      tdEl.textContent = clickThruPerProduct[p] + '%';
       trEl.appendChild(tdEl);
       tbEl.appendChild(trEl);
     }
 
     tbEl.addEventListener('click', closeTable);
 
-    for(var b = 0; b < imageObjectArray.length; b++ ){
-      clicksPerProduct.push(imageObjectArray[b].timesClicked);
+
+
+    function indexOfMax(arr) {
+      var max = arr[0];
+      var maxIndex = 0;
+      for (var c = 1; c < arr.length; c++) {
+        if (arr[c] > max) {
+          maxIndex = c;
+          max = arr[c];
+        }
+      }
+      console.log(maxIndex);
     }
 
+    indexOfMax(clickThruPerProduct);
+
+    // for(var d = 0; d < 5; d++) {
+    //   indexOfMax(clickThruPerProduct);
+    //   console.log(maxIndex);
+    // }
   }
 }
 
@@ -194,7 +221,7 @@ function createChart() {
   };
 
   var canvas1 = document.getElementById('canvas1').getContext('2d');
-  new Chart.Bar(canvas1, {data: mydata});
+  new Chart.Bar(canvas1, {data: mydata, options: {responsive: false}});
 
   var myPieChart = {
     labels: imageNameArray,
@@ -208,11 +235,38 @@ function createChart() {
         hoverBackgroundColor: [
           '#FF6384',
           '#36A2EB',
-          '#FFCE56',,]
+          '#FFCE56',]
       }]
   };
 
   var canvas2 = document.getElementById('canvas2').getContext('2d');
-  new Chart(canvas2, {type: 'pie', data: myPieChart});
+  new Chart(canvas2, {type: 'pie', data: myPieChart, options: {responsive: false}});
+
+  var doubleData = {
+    labels: imageNameArray,
+    datasets: [
+      {
+        label: 'Views Per Product',
+        backgroundColor: 'rgba(255,99,132,0.2)',
+        borderColor: 'rgba(255,99,132,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+        hoverBorderColor: 'rgba(255,99,132,1)',
+        data: viewsPerProduct,
+      },
+      {
+        label: 'Clicks Per Product',
+        backgroundColor: 'rgba(755,49,32,0.2)',
+        borderColor: 'rgba(755,49,32,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(755,49,32,0.4)',
+        hoverBorderColor: 'rgba(755,49,32,1)',
+        data: clicksPerProduct,
+      }
+    ]
+  };
+
+  var canvas3 = document.getElementById('canvas3').getContext('2d');
+  new Chart.Bar(canvas3, {data: doubleData, options: {responsive: false}});
 
 }
