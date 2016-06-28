@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="stylesheet" href="reset-style.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Arvo|Bitter|Copse|Cutive|Lora:700|Sanchez|Scope+One|Slabo+27px|Trocchi|Vesper+Libre" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <h1>Bus Mall</h1>
+      <h2>Products That DRIVE Innovation</h2>
+    </header>
+    <main>
+      <section>
+        <div id=intro>
+          <h3>Instructions:</h3>
+          <p> You will be shown 3 images at a time, please select your favorite product among them. You will be asked you to repeat the selection process 25 times. At the end of the survey, the results will be provided. Thank you.</p>
+          <br>
+          <p>(press the "Start Test" button to begin)</p>
+        </div>
+        <button id="startButton">Start Test</button>
+      </section>
+      <section>
+        <div id="runningCounter" class="hidden">
+          <span id="runningTotal"></span>
+          <span id="runningCount"> of 25 sections made</span>
+        </div>
+        <ul class "gallery" id="imageSpace"><ul>
+      </section>
+      <section>
+        <table id="tableResults">
+        </table>
+      </section>
+    </main>
+    <footer>
+    </footer>
+    <script src="app.js"> </script>
+  </body>
+</html>
