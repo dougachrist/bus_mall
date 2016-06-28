@@ -2,12 +2,18 @@
 
 //global vars
 
-var imageNameArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulu', 'dogDuck', 'dragon', 'pen', 'petSweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb','waterCan'];
+var imageNameArray = ['bag','banana','bathroom','boots','breakfast','bubblegum', 'chair','cthulhu','dogDuck','dragon','pen','petSweep','scissors','shark','sweep','tauntaun','unicorn','usb','waterCan','wineGlass'];
 
 var imageObjectArray = [];
+var clickCounter = 0;
+var randNum1 = 50; // these are the previous run numbers
+var randNum2 = 50;
+var randNum3 = 50;
+var i = 50;
+var j = 50;
+var k = 50;
 
 function imageLoader(imgName,idNumber) {
-
   this.imgName = imgName;
   this.idNumber = idNumber;
   this.filePath = 'img/' + imgName + '.jpg';
@@ -17,74 +23,137 @@ function imageLoader(imgName,idNumber) {
   imageObjectArray.push(this);
 }
 
-// var bag = new imageLoader(bag,1,'img/bag.jpg');
-// var banana = new imageLoader(banana,2,'img/banana.jpg');
-// var bathroom = new imageLoader(bathroom,3,'img/bathroom.jpg');
-// var boots = new imageLoader(boots,4,'img/boots.jpg');
-// var breakfast = new imageLoader(breakfast,5,'img/breakfast.jpg');
-// var bubblegum = new imageLoader(bubblegum,6,'img/bubblegum.jpg');
-// var chair = new imageLoader(chair,7,'img/chair.jpg');
-// var cthulu = new imageLoader(cthulu,8,'img/cthulu.jpg');
-// var dogDuck = new imageLoader(dogDuck,9,'img/dog-duck.jpg'); //dog-duck
-// var dragon = new imageLoader(bag,10,'img/dragon.jpg');
-// var pen = new imageLoader(bag,11,'img/pen.jpg');
-// var petSweep = new imageLoader(petSweep,12,'img/pet-sweep.jpg');
-// var scissors = new imageLoader(bag,13,'img/scissors.jpg');
-// var shark = new imageLoader(bag,14,'img/shark.jpg');
-// var sweep = new imageLoader(bag,15,'img/sweep.png');
-// var tauntaun = new imageLoader(bag,16,'img/tauntaun.jpg');
-// var unicorn = new imageLoader(bag,17,'img/unicorn.jpg');
-// var usb = new imageLoader(bag,18,'img/usb.jpg');
-// var waterCan = new imageLoader(bag,19,'img/waterCan.jpg');
-// var wineGlass = new imageLoader(bag,20,'img/wineGlass.jpg');
-
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-for( var i = 0; i < imageNameArray.length; i++) {
+for(var i = 0; i < imageNameArray.length; i++) {
   var newImage = imageNameArray[i];
   newImage = new imageLoader(newImage,i);
 }
 
-console.log(imageObjectArray.length);
+function getthreerandomnumbers(){
+  i = getRandomNumber(0,(imageObjectArray.length - 1));
+  while (i === randNum1 || i === randNum2 || i === randNum3) {
+    i = getRandomNumber(0,(imageObjectArray.length - 1));
+  }
+  j = getRandomNumber(0,(imageObjectArray.length - 1));
+  while(i === j || j === randNum1 || j === randNum2 || j === randNum3) {
+    j = getRandomNumber(0,(imageObjectArray.length - 1));
+  }
+  k = getRandomNumber(0,(imageObjectArray.length - 1));
+  while(k === j || k === i || k === randNum1 || k === randNum2 || k === randNum3) {
+    k = getRandomNumber(0,(imageObjectArray.length - 1));
+  }
+  randNum1 = i;
+  randNum2 = j;
+  randNum3 = k;
+}
 
-function generateNewPhoto() {
-  i = getRandomNumber(0,(imageObjectArray.length - 2));
+function generateNewPhotos() {
+  getthreerandomnumbers();
   var ulEl = document.getElementById('imageSpace');
   var liEl = document.createElement('li');
   liEl.id = 'firstPhotoLi';
   var imgEl = document.createElement('img');
   imgEl.setAttribute('src', imageObjectArray[i].filePath);
   imgEl.id = 'firstPhotoImg';
+  imageObjectArray[i].timesViewed++;
   liEl.appendChild(imgEl);
   ulEl.appendChild(liEl);
+
+  var liEl = document.createElement('li');
+  liEl.id = 'secondPhotoLi';
+  var imgEl = document.createElement('img');
+  imgEl.setAttribute('src', imageObjectArray[j].filePath);
+  imgEl.id = 'secondPhotoImg';
+  imageObjectArray[j].timesViewed++;
+  liEl.appendChild(imgEl);
+  ulEl.appendChild(liEl);
+
+  var liEl = document.createElement('li');
+  liEl.id = 'thridPhotoLi';
+  var imgEl = document.createElement('img');
+  imgEl.setAttribute('src', imageObjectArray[k].filePath);
+  imgEl.id = 'thirdPhotoImg';
+  imageObjectArray[k].timesViewed++;
+  liEl.appendChild(imgEl);
+  ulEl.appendChild(liEl);
+
+  clickCounter ++;
+  var clickCounterEl = document.getElementById('runningTotal');
+  clickCounterEl.textContent = clickCounter;
+  if(clickCounter > 24) {
+    imageSpace.removeEventListener('click', showMorePhotos);
+
+    var tbEl = document.getElementById('tableResults');
+    var trEl = document.createElement('tr');
+    var thEl = document.createElement('th');
+    thEl.textContent = 'Image';
+    trEl.appendChild(thEl);
+    var thEl = document.createElement('th');
+    thEl.textContent = 'timesViewed';
+    trEl.appendChild(thEl);
+    var thEl = document.createElement('th');
+    thEl.textContent = 'timesClicked';
+    trEl.appendChild(thEl);
+    var thEl = document.createElement('th');
+    thEl.textContent = 'Click Thru Rate';
+    trEl.appendChild(thEl);
+    tbEl.appendChild(trEl);
+
+    for(var p = 0; p < imageObjectArray.length; p++){
+      var trEl = document.createElement('tr');
+      var tdEl = document.createElement('td');
+      tdEl.textContent = imageObjectArray[p].imgName;
+      trEl.appendChild(tdEl);
+      var tdEl = document.createElement('td');
+      tdEl.textContent = imageObjectArray[p].timesViewed;
+      trEl.appendChild(tdEl);
+      var tdEl = document.createElement('td');
+      tdEl.textContent = imageObjectArray[p].timesClicked;
+      trEl.appendChild(tdEl);
+      var tdEl = document.createElement('td');
+      tdEl.textContent = Math.floor(((imageObjectArray[p].timesClicked / imageObjectArray[p].timesViewed) * 100)) + '%';
+      trEl.appendChild(tdEl);
+      tbEl.appendChild(trEl);
+      // console.log(imageObjectArray[p].imgName);
+      // console.log(imageObjectArray[p].timesViewed);
+      // console.log(imageObjectArray[p].timesClicked);
+    }
+  }
 }
 
-generateNewPhoto();
+generateNewPhotos();
 var firstPhoto = document.getElementById('firstPhotoImg');
 
 var imageSpace = document.getElementById('imageSpace');
 
-function repeatFunction(event) {
+function showMorePhotos(event) {
   if (event.target.id === 'firstPhotoImg') {
-    console.log('you clicked on the photo');
+    console.log('you clicked on the first photo');
+    imageObjectArray[i].timesClicked++;
     var ulEl = document.getElementById('imageSpace');
     ulEl.innerHTML = '';
-    generateNewPhoto();
+    generateNewPhotos();
   }
+
+  if (event.target.id === 'secondPhotoImg') {
+    console.log('you clicked on the second photo');
+    imageObjectArray[j].timesClicked++;
+    var ulEl = document.getElementById('imageSpace');
+    ulEl.innerHTML = '';
+    generateNewPhotos();
+  }
+
+  if (event.target.id === 'thirdPhotoImg') {
+    console.log('you clicked on the third photo');
+    imageObjectArray[k].timesClicked++;
+    var ulEl = document.getElementById('imageSpace');
+    ulEl.innerHTML = '';
+    generateNewPhotos();
+  }
+
 };
 
-imageSpace.addEventListener('click', repeatFunction);
-
-// var liEl = document.getElementById('')
-
-// var
-//
-// addEventListener('click', somefunction)
-// var ulEl = document.getElementById('imageSpace');
-// ulEl.innerHTML = '';
-//
-// i = getRandomNumber(0,imageObjectArray.length);
-// var liEl = document.getElementById('fistPhoto');
-// liEl.innerHTML = imageObjectArray[i].imgHTMLtag;
+imageSpace.addEventListener('click', showMorePhotos);
