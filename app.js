@@ -23,6 +23,14 @@ function imageLoader(imgName,idNumber) {
   imageObjectArray.push(this);
 }
 
+function startTheGame() {
+  startButton.className = 'hidden';
+  return generateNewPhotos();
+}
+
+var startButton = document.getElementById('startButton');
+startButton.addEventListener('click', startTheGame);
+
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -87,15 +95,16 @@ function generateNewPhotos() {
     imageSpace.removeEventListener('click', showMorePhotos);
 
     var tbEl = document.getElementById('tableResults');
+    ulEl.className = 'hidden';
     var trEl = document.createElement('tr');
     var thEl = document.createElement('th');
-    thEl.textContent = 'Image';
+    thEl.textContent = 'Image Name';
     trEl.appendChild(thEl);
     var thEl = document.createElement('th');
-    thEl.textContent = 'timesViewed';
+    thEl.textContent = 'Times Viewed';
     trEl.appendChild(thEl);
     var thEl = document.createElement('th');
-    thEl.textContent = 'timesClicked';
+    thEl.textContent = 'Times Clicked';
     trEl.appendChild(thEl);
     var thEl = document.createElement('th');
     thEl.textContent = 'Click Thru Rate';
@@ -117,6 +126,7 @@ function generateNewPhotos() {
       tdEl.textContent = Math.floor(((imageObjectArray[p].timesClicked / imageObjectArray[p].timesViewed) * 100)) + '%';
       trEl.appendChild(tdEl);
       tbEl.appendChild(trEl);
+
       // console.log(imageObjectArray[p].imgName);
       // console.log(imageObjectArray[p].timesViewed);
       // console.log(imageObjectArray[p].timesClicked);
@@ -124,7 +134,7 @@ function generateNewPhotos() {
   }
 }
 
-generateNewPhotos();
+// generateNewPhotos();
 var firstPhoto = document.getElementById('firstPhotoImg');
 
 var imageSpace = document.getElementById('imageSpace');

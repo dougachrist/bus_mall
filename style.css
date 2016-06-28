@@ -1,24 +1,53 @@
 body {
-  background: gray;
+  background: #71bcbc;
   color: blue;
 }
 
 header {
   background: orange;
+  text-align: center;
 }
 
 h1 {
-  display: block;
-  margin: 0 auto;
   font-size: 50px;
 }
 
-h2 {  margin: 0 auto;
-  font-size: 30px
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 25px;
+}
+
+p {
+  margin: 0 auto;
+  font-size: 18px;
+  width: 500px;
+}
+
+section {
+  text-align: center;
+}
+
+button {
+margin-top:50px;
+font-size: 40px;
+width: 200px;
+height: 100px;
+border: 3px solid black
+}
+
+button:hover {
+color: green;
+font-size: 40px;
+width: 200px;
+height: 100px;
+border: 3px solid green;
+cursor: pointer;
 }
 
 ul {
-  width: 960px;
 }
 
 li {
@@ -26,7 +55,55 @@ li {
   margin: 10px;
 }
 
+.hidden {
+  visibility: hidden;
+  height: 5px;
+}
+
 img {
-  height: 200px;
-  width: 200px:
+  margin: 0 auto;
+  height: 300px;
+  width: 300px:
+}
+
+img:hover {
+  border: 2px solid green;
+  margin: 0 auto;
+  height: 300px;
+  width: 300px;
+  cursor: pointer;
+
+}
+
+table {
+  margin: 0 auto;
+  font-size: 18px;
+  color: white;
+  text-align: center;
+  border: 1px solid black;
+  vertical-align: middle;
+  padding: 3px;
+  }
+
+tr:nth-child(even){
+  background-color: gray;
+}
+
+th {
+  font-size: 20px;
+  width: 40px;
+  margin: 5px;
+  padding: 3px;
+  border: 1px solid black;
+}
+th:last-child {
+  width: 100px;
+  margin: 5px;
+  padding: 3px;
+  border: 1px solid black;
+}
+
+td {
+  padding: 3px;
+  border: 1px solid black;
 }
