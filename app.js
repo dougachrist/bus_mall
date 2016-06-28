@@ -5,8 +5,8 @@
 var imageNameArray = ['bag','banana','bathroom','boots','breakfast','bubblegum', 'chair','cthulhu','dogDuck','dragon','pen','petSweep','scissors','shark','sweep','tauntaun','unicorn','usb','waterCan','wineGlass'];
 
 var imageObjectArray = [];
-var clickCounter = 0;
-var randNum1 = 50; // these are the previous run numbers
+var clickCounter = -1;
+var randNum1 = 50; // these place holders for previous run numbers
 var randNum2 = 50;
 var randNum3 = 50;
 var i = 50;
@@ -25,6 +25,10 @@ function imageLoader(imgName,idNumber) {
 
 function startTheGame() {
   startButton.className = 'hidden';
+  var intro = document.getElementById('intro');
+  intro.className = 'hidden';
+  var runningCounter = document.getElementById('runningCounter');
+  runningCounter.className = 'active';
   return generateNewPhotos();
 }
 
@@ -126,44 +130,31 @@ function generateNewPhotos() {
       tdEl.textContent = Math.floor(((imageObjectArray[p].timesClicked / imageObjectArray[p].timesViewed) * 100)) + '%';
       trEl.appendChild(tdEl);
       tbEl.appendChild(trEl);
-
-      // console.log(imageObjectArray[p].imgName);
-      // console.log(imageObjectArray[p].timesViewed);
-      // console.log(imageObjectArray[p].timesClicked);
     }
   }
 }
 
-// generateNewPhotos();
 var firstPhoto = document.getElementById('firstPhotoImg');
 
 var imageSpace = document.getElementById('imageSpace');
 
+function checkPhoto(arrayObj) {
+  arrayObj.timesClicked++;
+  var ulEl = document.getElementById('imageSpace');
+  ulEl.innerHTML = '';
+  generateNewPhotos();
+};
+
 function showMorePhotos(event) {
   if (event.target.id === 'firstPhotoImg') {
-    console.log('you clicked on the first photo');
-    imageObjectArray[i].timesClicked++;
-    var ulEl = document.getElementById('imageSpace');
-    ulEl.innerHTML = '';
-    generateNewPhotos();
+    checkPhoto(imageObjectArray[i]);
   }
-
   if (event.target.id === 'secondPhotoImg') {
-    console.log('you clicked on the second photo');
-    imageObjectArray[j].timesClicked++;
-    var ulEl = document.getElementById('imageSpace');
-    ulEl.innerHTML = '';
-    generateNewPhotos();
+    checkPhoto(imageObjectArray[j]);
   }
-
   if (event.target.id === 'thirdPhotoImg') {
-    console.log('you clicked on the third photo');
-    imageObjectArray[k].timesClicked++;
-    var ulEl = document.getElementById('imageSpace');
-    ulEl.innerHTML = '';
-    generateNewPhotos();
+    checkPhoto(imageObjectArray[k]);
   }
-
 };
 
 imageSpace.addEventListener('click', showMorePhotos);
