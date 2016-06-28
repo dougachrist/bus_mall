@@ -12,6 +12,7 @@ var randNum3 = 50;
 var i = 50;
 var j = 50;
 var k = 50;
+var clicksPerProduct = [];
 
 function imageLoader(imgName,idNumber) {
   this.imgName = imgName;
@@ -32,6 +33,12 @@ function startTheGame() {
   return generateNewPhotos();
 }
 
+function closeTable() {
+  var tbEl = document.getElementById('tableResults');
+  tbEl.innerHTML = '';
+  createChart();
+}
+
 var startButton = document.getElementById('startButton');
 startButton.addEventListener('click', startTheGame);
 
@@ -39,13 +46,15 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+//create the objects
 for(var i = 0; i < imageNameArray.length; i++) {
   var newImage = imageNameArray[i];
   newImage = new imageLoader(newImage,i);
 }
 
-function getthreerandomnumbers(){
+function getthreerandomnumbers() {
   i = getRandomNumber(0,(imageObjectArray.length - 1));
+  console.log(i);
   while (i === randNum1 || i === randNum2 || i === randNum3) {
     i = getRandomNumber(0,(imageObjectArray.length - 1));
   }
@@ -63,11 +72,14 @@ function getthreerandomnumbers(){
 }
 
 function generateNewPhotos() {
+  console.log(i);
   getthreerandomnumbers();
+  console.log(i);
   var ulEl = document.getElementById('imageSpace');
   var liEl = document.createElement('li');
   liEl.id = 'firstPhotoLi';
   var imgEl = document.createElement('img');
+  console.log(i);
   imgEl.setAttribute('src', imageObjectArray[i].filePath);
   imgEl.id = 'firstPhotoImg';
   imageObjectArray[i].timesViewed++;
@@ -115,7 +127,7 @@ function generateNewPhotos() {
     trEl.appendChild(thEl);
     tbEl.appendChild(trEl);
 
-    for(var p = 0; p < imageObjectArray.length; p++){
+    for(var p = 0; p < imageObjectArray.length; p++) {
       var trEl = document.createElement('tr');
       var tdEl = document.createElement('td');
       tdEl.textContent = imageObjectArray[p].imgName;
@@ -131,6 +143,13 @@ function generateNewPhotos() {
       trEl.appendChild(tdEl);
       tbEl.appendChild(trEl);
     }
+
+    tbEl.addEventListener('click', closeTable);
+
+    for(var b = 0; b < imageObjectArray.length; b++ ){
+      clicksPerProduct.push(imageObjectArray[b].timesClicked);
+    }
+
   }
 }
 
@@ -154,3 +173,46 @@ function showMorePhotos(event) {
 };
 
 imageSpace.addEventListener('click', showMorePhotos);
+
+// CHART details
+
+function createChart() {
+
+  var mydata = {
+    labels: imageNameArray,
+    datasets: [
+      {
+        label: 'Click Per Product',
+        backgroundColor: 'rgba(255,99,132,0.2)',
+        borderColor: 'rgba(255,99,132,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+        hoverBorderColor: 'rgba(255,99,132,1)',
+        data: clicksPerProduct,
+      }
+    ]
+  };
+
+  var canvas1 = document.getElementById('canvas1').getContext('2d');
+  new Chart.Bar(canvas1, {data: mydata});
+
+  var myPieChart = {
+    labels: imageNameArray,
+    datasets: [
+      {
+        data: clicksPerProduct,
+        backgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56'],
+        hoverBackgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56',,]
+      }]
+  };
+
+  var canvas2 = document.getElementById('canvas2').getContext('2d');
+  new Chart(canvas2, {type: 'pie', data: myPieChart});
+
+}
