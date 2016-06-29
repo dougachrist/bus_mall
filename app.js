@@ -24,6 +24,7 @@ function imageLoader(imgName,idNumber) {
   this.imgHTMLtag = '<img src="img/' + imgName + '.jpg">';
   this.timesClicked = 0;
   this.timesViewed = 0;
+  this.clickThruPercent = 0;
   imageObjectArray.push(this);
 }
 
@@ -75,6 +76,7 @@ function getthreerandomnumbers() {
 
 function generateNewPhotos() {
   getthreerandomnumbers();
+
   var ulEl = document.getElementById('imageSpace');
   var liEl = document.createElement('li');
   liEl.id = 'firstPhotoLi';
@@ -95,7 +97,7 @@ function generateNewPhotos() {
   ulEl.appendChild(liEl);
 
   var liEl = document.createElement('li');
-  liEl.id = 'thridPhotoLi';
+  liEl.id = 'thirdPhotoLi';
   var imgEl = document.createElement('img');
   imgEl.setAttribute('src', imageObjectArray[k].filePath);
   imgEl.id = 'thirdPhotoImg';
@@ -104,79 +106,50 @@ function generateNewPhotos() {
   ulEl.appendChild(liEl);
 
   clickCounter ++;
+
   var clickCounterEl = document.getElementById('runningTotal');
   clickCounterEl.textContent = clickCounter;
   if(clickCounter > 24) {
 
-    for(var b = 0; b < imageObjectArray.length; b++ ){
-      clicksPerProduct.push(imageObjectArray[b].timesClicked);
-      viewsPerProduct.push(imageObjectArray[b].timesViewed);
+    for(var b = 0; b < imageObjectArray.length; b++) {
+      clicksPerProduct[b] = imageObjectArray[b].timesClicked;
+      viewsPerProduct[b] = imageObjectArray[b].timesViewed;
       if(imageObjectArray[b].timesViewed !== 0) {
-        var e = Math.floor(((imageObjectArray[b].timesClicked / imageObjectArray[b].timesViewed) * 100));
+        imageObjectArray[b].clickThruPercent = Math.floor(((imageObjectArray[b].timesClicked / imageObjectArray[b].timesViewed) * 100));
       } else {
-        var e = 0;
+        imageObjectArray[b].clickThruPercent = 0;
       }
-      clickThruPerProduct.push(e);
+      clickThruPerProduct[b] = imageObjectArray[b].clickThruPercent;
     }
 
     imageSpace.removeEventListener('click', showMorePhotos);
 
+    function addingElement(th, id) {
+      var thEl = document.createElement(th);
+      thEl.textContent = id;
+      trEl.appendChild(thEl);
+    }
+
     var tbEl = document.getElementById('tableResults');
     ulEl.className = 'hidden';
     var trEl = document.createElement('tr');
-    var thEl = document.createElement('th');
-    thEl.textContent = 'Image Name';
-    trEl.appendChild(thEl);
-    var thEl = document.createElement('th');
-    thEl.textContent = 'Times Viewed';
-    trEl.appendChild(thEl);
-    var thEl = document.createElement('th');
-    thEl.textContent = 'Times Clicked';
-    trEl.appendChild(thEl);
-    var thEl = document.createElement('th');
-    thEl.textContent = 'Click Thru Rate';
-    trEl.appendChild(thEl);
+    addingElement('th','Image Name');
+    addingElement('th','Times Viewed');
+    addingElement('th','Times Clicked');
+    addingElement('th','Click Thru Rate');
     tbEl.appendChild(trEl);
 
     for(var p = 0; p < imageObjectArray.length; p++) {
       var trEl = document.createElement('tr');
-      var tdEl = document.createElement('td');
-      tdEl.textContent = imageObjectArray[p].imgName;
-      trEl.appendChild(tdEl);
-      var tdEl = document.createElement('td');
-      tdEl.textContent = imageObjectArray[p].timesViewed;
-      trEl.appendChild(tdEl);
-      var tdEl = document.createElement('td');
-      tdEl.textContent = imageObjectArray[p].timesClicked;
-      trEl.appendChild(tdEl);
-      var tdEl = document.createElement('td');
-      tdEl.textContent = clickThruPerProduct[p] + '%';
-      trEl.appendChild(tdEl);
+      addingElement('td',imageObjectArray[p].imgName);
+      addingElement('td',imageObjectArray[p].timesViewed);
+      addingElement('td',imageObjectArray[p].timesClicked);
+      addingElement('td',clickThruPerProduct[p] + '%');
       tbEl.appendChild(trEl);
     }
 
     tbEl.addEventListener('click', closeTable);
 
-
-
-    function indexOfMax(arr) {
-      var max = arr[0];
-      var maxIndex = 0;
-      for (var c = 1; c < arr.length; c++) {
-        if (arr[c] > max) {
-          maxIndex = c;
-          max = arr[c];
-        }
-      }
-      console.log(maxIndex);
-    }
-
-    indexOfMax(clickThruPerProduct);
-
-    // for(var d = 0; d < 5; d++) {
-    //   indexOfMax(clickThruPerProduct);
-    //   console.log(maxIndex);
-    // }
   }
 }
 
@@ -229,13 +202,17 @@ function createChart() {
       {
         data: clicksPerProduct,
         backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56'],
+          '#FF6384','#36A2EB','#FFCE56','#FF0000','#CC0000',
+          '#990033','#660033','#330033','#000033','#006699',
+          '#FF3300','#CC6600','#993300','#663300','#333300',
+          '#FF9900','#CC9900','#996600','#666600','#336600'
+        ],
         hoverBackgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',]
+          '#FF6384','#36A2EB','#FFCE56','#FF0001','#CC0001',
+          '#990033','#660033','#330034','#000033','#006699',
+          '#FF3301','#CC6601','#993301','#663301','#333301',
+          '#FF9901','#CC9901','#996601','#666601','#336601'
+        ]
       }]
   };
 
