@@ -18,6 +18,8 @@ var clickThruPerProduct = [];
 var maxIndex = 0;
 var imageObjectOrdered = [];
 var imageOrderTop5 = [];
+var imageTop5Amts = [];
+var imageTop5Names = [];
 
 function imageLoader(imgName,idNumber) {
   this.imgName = imgName;
@@ -138,11 +140,10 @@ function generateNewPhotos() {
         f = -1;
       }
     }
-
-    console.log(parseInt(imageObjectOrdered[7].clickThruPercent));
-    console.log(imageObjectOrdered);
     for(var y = 0; y < 5; y++ ) {
       imageOrderTop5.push(imageObjectOrdered[y]);
+      imageTop5Amts.push(imageObjectOrdered[y].clickThruPercent);
+      imageTop5Names.push(imageObjectOrdered[y].imgName);
     }
 
     imageSpace.removeEventListener('click', showMorePhotos);
@@ -221,6 +222,8 @@ function createChart() {
         borderWidth: 1,
         hoverBackgroundColor: 'rgba(255,99,132,0.4)',
         hoverBorderColor: 'rgba(255,99,132,1)',
+        scaleOverride: true,
+        scaleSteps: 1,
         data: clicksPerProduct,
       }
     ]
@@ -278,5 +281,26 @@ function createChart() {
 
   var canvas3 = document.getElementById('canvas3').getContext('2d');
   new Chart.Bar(canvas3, {data: doubleData, options: {responsive: false}});
+
+  var top5data = {
+    labels: imageTop5Names,
+    datasets: [
+      {
+        label: 'Click Per Product',
+        backgroundColor: 'rgba(255,99,132,0.2)',
+        borderColor: 'rgba(255,99,132,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+        hoverBorderColor: 'rgba(255,99,132,1)',
+        scaleOverride: true,
+        scaleSteps: 10,
+        scaleStartsValue: 0,
+        data: imageTop5Amts
+      }
+    ]
+  };
+
+  var canvas4 = document.getElementById('canvas4').getContext('2d');
+  new Chart.Bar(canvas4, {data: top5data, options: {responsive: false}, });
 
 }
