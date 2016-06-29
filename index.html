@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="reset-style.css">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Arvo|Bitter|Copse|Cutive|Lora:700|Sanchez|Scope+One|Slabo+27px|Trocchi|Vesper+Libre" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
   </head>
   <body>
     <header>
@@ -14,7 +15,7 @@
       <section>
         <div id=intro>
           <h3>Instructions:</h3>
-          <p> You will be shown 3 images at a time, please select your favorite product among them. You will be asked you to repeat the selection process 25 times. At the end of the survey, the results will be provided. Thank you.</p>
+          <p> You will be shown 3 images at a time, please select your favorite product among them. You will be asked to repeat the selection process 25 times. At the end of the survey, the results will be provided. Thank you.</p>
           <br>
           <p>(press the "Start Test" button to begin)</p>
         </div>
@@ -31,6 +32,19 @@
         <table id="tableResults">
         </table>
       </section>
+      <div class="chartjs">
+        <canvas id="canvas1" width="450" height="300px" ></canvas>
+      </div>
+      <div class="chartjs">
+        <canvas id="canvas2" width="450px" height="300px" ></canvas>
+      </div>
+      <div class="chartjs">
+        <canvas id="canvas3" width="450px" height="300px" ></canvas>
+      </div>
+    </div>
+    <div class="chartjs">
+      <canvas id="canvas4" width="450px" height="300px" ></canvas>
+    </div>
     </main>
     <footer>
     </footer>
