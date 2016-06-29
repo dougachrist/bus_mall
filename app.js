@@ -16,6 +16,8 @@ var clicksPerProduct = [];
 var viewsPerProduct = [];
 var clickThruPerProduct = [];
 var maxIndex = 0;
+var imageObjectOrdered = [];
+var imageOrderTop5 = [];
 
 function imageLoader(imgName,idNumber) {
   this.imgName = imgName;
@@ -109,9 +111,11 @@ function generateNewPhotos() {
 
   var clickCounterEl = document.getElementById('runningTotal');
   clickCounterEl.textContent = clickCounter;
+
   if(clickCounter > 24) {
 
     for(var b = 0; b < imageObjectArray.length; b++) {
+
       clicksPerProduct[b] = imageObjectArray[b].timesClicked;
       viewsPerProduct[b] = imageObjectArray[b].timesViewed;
       if(imageObjectArray[b].timesViewed !== 0) {
@@ -122,6 +126,25 @@ function generateNewPhotos() {
       clickThruPerProduct[b] = imageObjectArray[b].clickThruPercent;
     }
 
+    //find the top 5 by click thru Rate:
+    imageObjectOrdered = imageObjectOrdered.concat(imageObjectArray);
+
+    for(var f = 0; f < (imageObjectArray.length - 1); f++) {
+      var g = f + 1;
+      if(parseInt(imageObjectOrdered[g].clickThruPercent) > parseInt(imageObjectOrdered[f].clickThruPercent)) {
+        var toFront = imageObjectOrdered[g];
+        imageObjectOrdered.splice(g,1);
+        imageObjectOrdered.unshift(toFront);
+        f = -1;
+      }
+    }
+
+    console.log(parseInt(imageObjectOrdered[7].clickThruPercent));
+    console.log(imageObjectOrdered);
+    for(var y = 0; y < 5; y++ ) {
+      imageOrderTop5.push(imageObjectOrdered[y]);
+    }
+
     imageSpace.removeEventListener('click', showMorePhotos);
 
     function addingElement(th, id) {
@@ -129,9 +152,19 @@ function generateNewPhotos() {
       thEl.textContent = id;
       trEl.appendChild(thEl);
     }
-
     var tbEl = document.getElementById('tableResults');
-    ulEl.className = 'hidden';
+
+    var ulEl = document.getElementById('imageSpace');
+    ulEl.innerHTML = '';
+
+    var divEl = document.getElementById('runningCounter');
+    divEl.innerHTML = '';
+
+    var divEl = document.getElementById('notice');
+    var pEl = document.createElement('p');
+    pEl.textContent = 'click on the table to see the charts';
+    divEl.appendChild(pEl);
+
     var trEl = document.createElement('tr');
     addingElement('th','Image Name');
     addingElement('th','Times Viewed');
