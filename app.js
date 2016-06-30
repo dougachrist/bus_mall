@@ -15,15 +15,13 @@ var k = 50;
 var clicksPerProduct = [];
 var viewsPerProduct = [];
 var clickThruPerProduct = [];
-var maxIndex = 0;
 var imageObjectOrdered = [];
 var imageOrderTop5 = [];
 var imageTop5Amts = [];
 var imageTop5Names = [];
 
-function imageLoader(imgName,idNumber) {
+function ImageLoader(imgName) {
   this.imgName = imgName;
-  this.idNumber = idNumber;
   this.filePath = 'img/' + imgName + '.jpg';
   this.imgHTMLtag = '<img src="img/' + imgName + '.jpg">';
   this.timesClicked = 0;
@@ -32,7 +30,24 @@ function imageLoader(imgName,idNumber) {
   imageObjectArray.push(this);
 }
 
+for(var i = 0; i < imageNameArray.length; i++) {
+  var newImage = imageNameArray[i];
+  newImage = new ImageLoader(newImage);
+}
+
+var startButton = document.getElementById('startButton');
+startButton.addEventListener('click', startTheGame);
+
+function updateLocalData() {
+  for(var w = 0; w < imageObjectArray.length; w++) {
+    if(localStorage.getItem(imageObjectArray[w].imgName) !== null) {
+      imageObjectArray[w] = JSON.parse(localStorage.getItem(imageObjectArray[w].imgName));
+    }
+  }
+}
+
 function startTheGame() {
+  updateLocalData();
   startButton.className = 'hidden';
   var intro = document.getElementById('intro');
   intro.className = 'hidden';
@@ -47,17 +62,12 @@ function closeTable() {
   createChart();
 }
 
-var startButton = document.getElementById('startButton');
-startButton.addEventListener('click', startTheGame);
+function pageRefresh() {
+  location.reload();
+}
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-//create the objects
-for(var i = 0; i < imageNameArray.length; i++) {
-  var newImage = imageNameArray[i];
-  newImage = new imageLoader(newImage,i);
 }
 
 function getthreerandomnumbers() {
@@ -114,19 +124,19 @@ function generateNewPhotos() {
   var clickCounterEl = document.getElementById('runningTotal');
   clickCounterEl.textContent = clickCounter;
 
-  if(clickCounter > 24) {
-
-    for(var b = 0; b < imageObjectArray.length; b++) {
-
-      clicksPerProduct[b] = imageObjectArray[b].timesClicked;
-      viewsPerProduct[b] = imageObjectArray[b].timesViewed;
-      if(imageObjectArray[b].timesViewed !== 0) {
-        imageObjectArray[b].clickThruPercent = Math.floor(((imageObjectArray[b].timesClicked / imageObjectArray[b].timesViewed) * 100));
-      } else {
-        imageObjectArray[b].clickThruPercent = 0;
-      }
-      clickThruPerProduct[b] = imageObjectArray[b].clickThruPercent;
+  for(var b = 0; b < imageObjectArray.length; b++) {
+    clicksPerProduct[b] = imageObjectArray[b].timesClicked;
+    viewsPerProduct[b] = imageObjectArray[b].timesViewed;
+    if(imageObjectArray[b].timesViewed !== 0) {
+      imageObjectArray[b].clickThruPercent = Math.floor(((imageObjectArray[b].timesClicked / imageObjectArray[b].timesViewed) * 100));
+    } else {
+      imageObjectArray[b].clickThruPercent = 0;
     }
+    localStorage.setItem(imageObjectArray[b].imgName,JSON.stringify(imageObjectArray[b]));
+    clickThruPerProduct[b] = imageObjectArray[b].clickThruPercent;
+  }
+
+  if(clickCounter > 24) {
 
     //find the top 5 by click thru Rate:
     imageObjectOrdered = imageObjectOrdered.concat(imageObjectArray);
@@ -189,6 +199,7 @@ function generateNewPhotos() {
 
 function checkPhoto(arrayObj) {
   arrayObj.timesClicked++;
+  localStorage.setItem(arrayObj.imgName, JSON.stringify(arrayObj));
   var ulEl = document.getElementById('imageSpace');
   ulEl.innerHTML = '';
   generateNewPhotos();
@@ -211,6 +222,12 @@ imageSpace.addEventListener('click', showMorePhotos);
 // CHART details
 
 function createChart() {
+
+  var divEl = document.getElementById('notice');
+  divEl.textContent = 'Click here to refresh page, and take the test again.';
+  divEl.setAttribute('id', 'link');
+
+  divEl.addEventListener('click', pageRefresh);
 
   var mydata = {
     labels: imageNameArray,
