@@ -20,7 +20,7 @@ var imageOrderTop5 = [];
 var imageTop5Amts = [];
 var imageTop5Names = [];
 
-function imageLoader(imgName) {
+function ImageLoader(imgName) {
   this.imgName = imgName;
   this.filePath = 'img/' + imgName + '.jpg';
   this.imgHTMLtag = '<img src="img/' + imgName + '.jpg">';
@@ -32,8 +32,11 @@ function imageLoader(imgName) {
 
 for(var i = 0; i < imageNameArray.length; i++) {
   var newImage = imageNameArray[i];
-  newImage = new imageLoader(newImage);
+  newImage = new ImageLoader(newImage);
 }
+
+var startButton = document.getElementById('startButton');
+startButton.addEventListener('click', startTheGame);
 
 function updateLocalData() {
   for(var w = 0; w < imageObjectArray.length; w++) {
@@ -59,8 +62,9 @@ function closeTable() {
   createChart();
 }
 
-var startButton = document.getElementById('startButton');
-startButton.addEventListener('click', startTheGame);
+function pageRefresh() {
+  location.reload();
+}
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -94,7 +98,6 @@ function generateNewPhotos() {
   imgEl.setAttribute('src', imageObjectArray[i].filePath);
   imgEl.id = 'firstPhotoImg';
   imageObjectArray[i].timesViewed++;
-  // localStorage.setItem(imageObjectArray[i].imgName, JSON.stringify(imageObjectArray[i]));
   liEl.appendChild(imgEl);
   ulEl.appendChild(liEl);
 
@@ -104,7 +107,6 @@ function generateNewPhotos() {
   imgEl.setAttribute('src', imageObjectArray[j].filePath);
   imgEl.id = 'secondPhotoImg';
   imageObjectArray[j].timesViewed++;
-  // localStorage.setItem(imageObjectArray[j].imgName, JSON.stringify(imageObjectArray[j]));
   liEl.appendChild(imgEl);
   ulEl.appendChild(liEl);
 
@@ -114,7 +116,6 @@ function generateNewPhotos() {
   imgEl.setAttribute('src', imageObjectArray[k].filePath);
   imgEl.id = 'thirdPhotoImg';
   imageObjectArray[k].timesViewed++;
-  // localStorage.setItem(imageObjectArray[k].imgName, JSON.stringify(imageObjectArray[k]));
   liEl.appendChild(imgEl);
   ulEl.appendChild(liEl);
 
@@ -123,7 +124,6 @@ function generateNewPhotos() {
   var clickCounterEl = document.getElementById('runningTotal');
   clickCounterEl.textContent = clickCounter;
 
-// just moved this up
   for(var b = 0; b < imageObjectArray.length; b++) {
     clicksPerProduct[b] = imageObjectArray[b].timesClicked;
     viewsPerProduct[b] = imageObjectArray[b].timesViewed;
@@ -222,6 +222,12 @@ imageSpace.addEventListener('click', showMorePhotos);
 // CHART details
 
 function createChart() {
+
+  var divEl = document.getElementById('notice');
+  divEl.textContent = 'Click here to refresh page, and take the test again.';
+  divEl.setAttribute('id', 'link');
+
+  divEl.addEventListener('click', pageRefresh);
 
   var mydata = {
     labels: imageNameArray,
